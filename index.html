@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Monesy 的医疗 AI 工程作品集：医院制度 RAG 问答与患者就医体验多维情感分类。">
+  <meta name="theme-color" content="#10283f">
+  <title>Monesy · 医疗 AI 工程作品集</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="Monesy 作品集首页">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <span>Monesy / AI Engineering</span>
+      </a>
+      <div class="nav-links">
+        <a href="#work">项目</a>
+        <a href="#principles">原则</a>
+        <a href="https://github.com/MonesyV" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div data-reveal>
+          <p class="eyebrow">Healthcare AI · Verified by evidence</p>
+          <h1>不展示医疗 AI 的神奇，<span class="accent">只展示它如何被验证。</span></h1>
+          <p class="lead">两份工程案例，分别处理医院制度知识检索与患者就医体验分类。每项能力都对应可检查的代码、标签或项目记录。</p>
+          <div class="hero-actions">
+            <a class="button" href="#work">查看两个案例 <span aria-hidden="true">↓</span></a>
+            <a class="button secondary" href="https://github.com/MonesyV" target="_blank" rel="noreferrer">查看代码仓库 ↗</a>
+          </div>
+        </div>
+        <aside class="hero-aside" data-reveal>
+          <strong>从模型到系统</strong>
+          <p>关注数据进入、模型决策、接口输出和风险兜底，而不只是一张模型指标表。</p>
+          <strong>从演示到证据</strong>
+          <p>有记录的数字注明来源；找不到的指标明确留白。</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section-tight" aria-label="作品集证据原则">
+      <div class="container proof-strip" data-reveal>
+        <article class="proof-item">
+          <span>EVIDENCE / 01</span>
+          <strong>代码可追溯</strong>
+          <p>架构、标签、接口均能回到对应模块。</p>
+        </article>
+        <article class="proof-item">
+          <span>BOUNDARY / 02</span>
+          <strong>能力不夸写</strong>
+          <p>单标签联合分类不会写成多标签同时预测。</p>
+        </article>
+        <article class="proof-item">
+          <span>PRIVACY / 03</span>
+          <strong>数据不外露</strong>
+          <p>案例不展示真实患者文本、密钥或内网信息。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="work">
+      <div class="container">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">Selected case files</p>
+          <h2>两个问题，两套可以解释的技术路径。</h2>
+          <p class="lead">一个让制度知识可检索、可引用；一个把就医评论拆成业务维度与情感极性。</p>
+        </div>
+
+        <div class="work-list">
+          <article class="work-card" data-reveal>
+            <div class="work-visual">
+              <span class="work-index">CASE FILE / 01 · KNOWLEDGE</span>
+              <div class="display">从制度文件到有出处的答案</div>
+              <div class="route-mini" aria-label="三级问答路径示意">
+                <span>FAQ / Redis · 高频问题快速命中</span>
+                <span>BERT Route · 判断问题类型</span>
+                <span>Milvus / ReAct · 深度检索与自检</span>
+              </div>
+            </div>
+            <div class="work-body">
+              <p class="eyebrow">医院制度智能问答系统</p>
+              <h3>用三级路由平衡响应速度与证据质量</h3>
+              <p>面向医院内部员工，将高频 FAQ、意图路由、混合检索与 ReAct 质量自检组合成一条可回退的问答链路，并用 SSE 流式输出和来源引用完成产品交付。</p>
+              <ul class="tag-list" aria-label="技术栈">
+                <li>RAG</li><li>ReAct Agent</li><li>Milvus</li><li>BGE-M3</li><li>FastAPI</li><li>Redis</li>
+              </ul>
+              <a class="button" href="projects/policy-rag.html">阅读完整案例 →</a>
+            </div>
+          </article>
+
+          <article class="work-card" data-reveal>
+            <div class="work-visual">
+              <span class="work-index">CASE FILE / 02 · EXPERIENCE</span>
+              <div class="display">把一句评价拆成可行动的反馈</div>
+              <div class="label-cloud" aria-label="示例联合标签">
+                <span>医疗技术 · 正面</span><span class="negative">服务态度 · 负面</span>
+                <span>沟通解释 · 正面</span><span class="negative">等待时间 · 负面</span>
+                <span>隐私保护 · 正面</span><span class="negative">费用感知 · 负面</span>
+              </div>
+            </div>
+            <div class="work-body">
+              <p class="eyebrow">患者就医体验多维情感分类</p>
+              <h3>10 个体验维度 × 2 种情感极性</h3>
+              <p>基于中文 BERT 的 20 类联合分类器，将患者评论映射到“维度_极性”标签，并通过 Flask 单模型接口和批量模型编排进入医疗 NLP 服务。</p>
+              <ul class="tag-list" aria-label="技术栈">
+                <li>BERT-base-chinese</li><li>PyTorch</li><li>Flask</li><li>REST API</li><li>20 classes</li>
+              </ul>
+              <a class="button" href="projects/patient-sentiment.html">阅读完整案例 →</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="principles">
+      <div class="container ethics-block" data-reveal>
+        <div class="ethics-intro">
+          <p class="eyebrow" style="color:#d8eff0">Responsible delivery</p>
+          <h2>医疗行业的作品集，也应当经得起审阅。</h2>
+          <p>页面把边界、来源和未验证项一起展示，因为可靠性本身就是工程能力。</p>
+        </div>
+        <ul class="ethics-list">
+          <li><strong>来源可查</strong><p>回答引用制度文档，案例引用具体代码模块。</p></li>
+          <li><strong>结果可解释</strong><p>分类标签直接对应医院可行动的体验维度。</p></li>
+          <li><strong>失败可控</strong><p>证据不足时回退，不让模型自由补全事实。</p></li>
+          <li><strong>隐私优先</strong><p>只用脱敏示例，不把业务数据当视觉素材。</p></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© <span data-year></span> Monesy · Medical AI case files</span>
+      <span>Designed around evidence, not spectacle.</span>
+    </div>
+  </footer>
+</body>
+</html>

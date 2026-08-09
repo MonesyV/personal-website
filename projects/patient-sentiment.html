@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="患者就医体验多维情感分类案例：10 个体验维度与正负情感构成 20 个联合类别。">
+  <meta name="theme-color" content="#264760">
+  <title>患者就医体验多维情感分类 · Monesy</title>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true">M</span><span>Monesy / AI Engineering</span></a>
+      <div class="nav-links"><a href="../index.html#work">全部项目</a><a href="#evidence">代码证据</a><a href="policy-rag.html">上一个案例</a></div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="case-hero">
+      <div class="container case-hero-grid">
+        <div data-reveal>
+          <p class="eyebrow">Case file 02 · Patient experience</p>
+          <h1>患者就医体验多维情感分类</h1>
+          <p class="lead">把患者评论映射为“体验维度_情感极性”联合标签，让自然语言反馈进入可统计、可分派的业务流程。</p>
+        </div>
+        <aside class="case-meta" data-reveal>
+          <dl>
+            <div><dt>场景</dt><dd>患者就医评论分类</dd></div>
+            <div><dt>模型</dt><dd>Chinese BERT · 20 类</dd></div>
+            <div><dt>服务</dt><dd>Flask REST API</dd></div>
+            <div><dt>状态</dt><dd>集成代码可检查</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container case-banner" data-reveal style="background:#264760">
+        <div class="case-banner-grid">
+          <blockquote>“不满意”不是一个可执行结论；等待、沟通、费用才是。</blockquote>
+          <div>
+            <p>同样的负面情绪可能来自完全不同的服务环节。联合标签同时编码评论指向的业务维度与正负极性，使结果更接近医院管理动作。</p>
+            <ul class="tag-list"><li>BERT-base-chinese</li><li>PyTorch</li><li>20 classes</li><li>Flask</li><li>Batch API</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container content-grid">
+        <div class="sticky-title" data-reveal>
+          <p class="eyebrow">Label design</p>
+          <h2>10 个维度，分别判断正面或负面。</h2>
+          <p class="text-muted">标签不是抽象情绪词，而是医院能够定位责任环节的体验维度。</p>
+        </div>
+        <div class="label-matrix" data-reveal aria-label="20 个联合分类标签">
+          <div class="label-row"><span>医疗技术</span><span class="polarity positive">正面</span><span class="polarity negative">负面</span></div>
+          <div class="label-row"><span>服务态度</span><span class="polarity positive">正面</span><span class="polarity negative">负面</span></div>
+          <div class="label-row"><span>就医流程</span><span class="polarity positive">正面</span><span class="polarity negative">负面</span></div>
+          <div class="label-row"><span>医院环境</span><span class="polarity positive">正面</span><span class="polarity negative">负面</span></div>
+          <div class="label-row"><span>费用感知</span><span class="polarity positive">正面</span><span class="polarity negative">负面</span></div>
+          <div class="label-row"><span>沟通解释</span><span class="polarity positive">正面</span><span class="polarity negative">负面</span></div>
+          <div class="label-row"><span>等待时间</span><span class="polarity positive">正面</span><span class="polarity negative">负面</span></div>
+          <div class="label-row"><span>设备设施</span><span class="polarity positive">正面</span><span class="polarity negative">负面</span></div>
+          <div class="label-row"><span>治疗效果</span><span class="polarity positive">正面</span><span class="polarity negative">负面</span></div>
+          <div class="label-row"><span>隐私保护</span><span class="polarity positive">正面</span><span class="polarity negative">负面</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-heading" data-reveal><p class="eyebrow">Inference pipeline</p><h2>从一句评论到一个可编排的分类结果。</h2></div>
+        <div class="architecture">
+          <article data-reveal><span class="chip">INPUT</span><h3>文本标准化</h3><p>Flask 接口接收 JSON 文本，先检查字段类型与空值，再交给统一 tokenizer；当前配置最大长度为 32。</p></article>
+          <article data-reveal><span class="chip">MODEL</span><h3>BERT 表示学习</h3><p>中文 BERT 编码评论语义，分类头输出 20 类 logits，覆盖 10 个体验维度与两种情感极性。</p></article>
+          <article data-reveal><span class="chip">OUTPUT</span><h3>联合标签返回</h3><p>通过 argmax 选择一个“维度_极性”标签，单模型接口或批量模型接口以 JSON 返回结果。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container content-grid">
+        <div class="sticky-title" data-reveal>
+          <p class="eyebrow">Product integration</p>
+          <h2>分类器不是孤立脚本，而是服务编排的一部分。</h2>
+        </div>
+        <div class="content-stack">
+          <article class="content-card" data-reveal><span class="number">01</span><h3>独立预测接口</h3><p><span class="mono">POST /api/predict/comment_classification</span> 接收单条评论，校验输入并返回预测类别，错误状态保持统一 JSON 结构。</p></article>
+          <article class="content-card" data-reveal><span class="number">02</span><h3>批量模型编排</h3><p><span class="mono">POST /api/predict/batch</span> 允许一次请求选择多个医疗 NLP 模型，评论分类器通过统一映射参与组合预测。</p></article>
+          <article class="content-card" data-reveal><span class="number">03</span><h3>启动时加载模型</h3><p>服务启动阶段加载词表、BERT 与分类权重并切换到 eval 模式，推理使用 <span class="mono">torch.no_grad()</span>。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container boundary" data-reveal>
+        <strong>能力边界：这里是 20 类单标签联合分类，不是真正的多标签同时预测。</strong>
+        <p>当前代码使用 <span class="mono">argmax</span>，一条评论只返回一个“维度_极性”组合。如果一条评论同时讨论等待时间和服务态度，现有实现只能选择其中一个主类别。要升级为真正的多标签任务，需要改用独立 sigmoid 输出、BCE 类损失、逐标签阈值和 micro / macro F1 评测。</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container content-grid">
+        <div class="sticky-title" data-reveal>
+          <p class="eyebrow">Evaluation status</p>
+          <h2>没有找到的指标，不写进成果栏。</h2>
+          <p class="text-muted">医疗 AI 的可信度从承认证据缺口开始。</p>
+        </div>
+        <div class="content-stack">
+          <article class="content-card" data-reveal><h3>当前能验证</h3><p>20 类标签字典、BERT 模型加载、tokenizer 参数、argmax 推理、单接口与批量接口编排。</p></article>
+          <article class="content-card" data-reveal><h3>当前未发现</h3><p>评论分类专用训练脚本、训练数据、模型权重文件、混淆矩阵以及 accuracy / macro-F1 等评测报告。</p></article>
+          <article class="content-card" data-reveal><h3>下一步应补齐</h3><p>保留独立测试集，报告 macro-F1 与各维度召回率；对正负极性、相邻维度和多主题评论分别做错误分析。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="evidence">
+      <div class="container content-grid">
+        <div class="sticky-title" data-reveal><p class="eyebrow">Evidence ledger</p><h2>当前作品内容来自这些文件。</h2></div>
+        <div class="content-card code-evidence" data-reveal>
+          <div class="evidence-row"><code>word_dict/comment_classifier_bert_model_word_dict.txt</code><span>20 个“维度_极性”联合标签。</span></div>
+          <div class="evidence-row"><code>_01_config.py</code><span>词表、BERT、模型权重路径与最大序列长度。</span></div>
+          <div class="evidence-row"><code>_03_bert_classifier_model.py</code><span>分类器结构与类别数参数。</span></div>
+          <div class="evidence-row"><code>http_api_fun.py</code><span>模型加载、argmax 推理、单接口和批量接口。</span></div>
+          <div class="evidence-row"><code>predict_fun.py</code><span>可复用的评论分类预测函数。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container next-case" data-reveal style="background:var(--teal)">
+        <a href="policy-rag.html"><div><span>BACK TO CASE / 01</span><strong>医院制度智能问答系统</strong></div><b aria-hidden="true">→</b></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><span>© <span data-year></span> Monesy</span><span>未发现的评测结果已明确留白。</span></div></footer>
+</body>
+</html>

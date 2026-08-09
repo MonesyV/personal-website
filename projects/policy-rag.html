@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="医院制度智能问答系统案例：FAQ、Redis、BERT 意图路由、Milvus RAG 与 ReAct Agent。">
+  <meta name="theme-color" content="#10283f">
+  <title>医院制度智能问答系统 · Monesy</title>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true">M</span><span>Monesy / AI Engineering</span></a>
+      <div class="nav-links"><a href="../index.html#work">全部项目</a><a href="#evidence">代码证据</a><a href="https://github.com/MonesyV/yzyz_policy_demo_v1.0" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="case-hero">
+      <div class="container case-hero-grid">
+        <div data-reveal>
+          <p class="eyebrow">Case file 01 · Knowledge system</p>
+          <h1>医院制度智能问答系统</h1>
+          <p class="lead">把分散的规章制度变成一套快问题快速答、复杂问题有证据、低质量检索能回退的问答服务。</p>
+        </div>
+        <aside class="case-meta" data-reveal>
+          <dl>
+            <div><dt>场景</dt><dd>医院内部制度查询</dd></div>
+            <div><dt>角色</dt><dd>NLP 算法设计与工程落地</dd></div>
+            <div><dt>版本</dt><dd>v1.1 · 2026</dd></div>
+            <div><dt>状态</dt><dd>完整代码可检查</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container case-banner" data-reveal>
+        <div class="case-banner-grid">
+          <blockquote>不是让每个问题都走大模型，而是让每个问题走合适的路径。</blockquote>
+          <div>
+            <p>医院制度问题高度重复，但复杂咨询又需要语义检索与来源追溯。系统将 FAQ 缓存、意图识别和 RAG 深度问答分层，减少不必要的模型调用。</p>
+            <ul class="tag-list"><li>FastAPI</li><li>MySQL</li><li>Redis</li><li>Milvus</li><li>BGE-M3</li><li>qwen3-max</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container content-grid">
+        <div class="sticky-title" data-reveal>
+          <p class="eyebrow">Problem framing</p>
+          <h2>业务问题不是“做一个聊天框”。</h2>
+          <p class="text-muted">真正的约束是速度、证据、制度边界和知识更新方式。</p>
+        </div>
+        <div class="content-stack">
+          <article class="content-card" data-reveal><span class="number">01</span><h3>制度散落，关键词不稳定</h3><p>员工用自然语言提问，原文可能使用另一套正式措辞。只做目录或全文搜索，容易漏掉语义相近的条款。</p></article>
+          <article class="content-card" data-reveal><span class="number">02</span><h3>高频问题不应承担完整 RAG 成本</h3><p>请假、考勤等问题重复度高，先通过 FAQ 与 Redis 处理，可把深度检索留给真正复杂的问题。</p></article>
+          <article class="content-card" data-reveal><span class="number">03</span><h3>答案必须能回到制度原文</h3><p>医疗机构内部制度具有执行约束，生成内容需要展示来源文档，并在证据质量不足时受控回退。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-heading" data-reveal><p class="eyebrow">Interactive route</p><h2>点击一种问题，查看它如何被路由。</h2></div>
+        <div class="route-demo" data-route-demo data-reveal>
+          <div class="route-controls" aria-label="问题类型">
+            <button type="button" data-route="faq" aria-pressed="true">高频制度问题</button>
+            <button type="button" data-route="rag" aria-pressed="false">专业制度咨询</button>
+            <button type="button" data-route="fallback" aria-pressed="false">非制度 / 证据不足</button>
+          </div>
+          <div class="route-track" aria-label="系统路由步骤">
+            <div class="route-stage is-active" data-stage="faq rag fallback"><span>STEP 01</span><strong>用户问题</strong></div>
+            <div class="route-stage is-active" data-stage="faq rag fallback"><span>STEP 02</span><strong>BM25 FAQ</strong></div>
+            <div class="route-stage is-active" data-stage="faq"><span>FAST PATH</span><strong>Redis / FAQ 返回</strong></div>
+            <div class="route-stage" data-stage="rag fallback"><span>DEEP PATH</span><strong>BERT 意图路由</strong></div>
+            <div class="route-stage" data-stage="rag"><span>EVIDENCE</span><strong>Milvus + ReAct</strong></div>
+          </div>
+          <p class="route-result" data-route-result>高频制度问题在 FAQ / Redis 链路中快速返回，避免调用完整 RAG。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading" data-reveal><p class="eyebrow">System architecture</p><h2>三层结构，各自解决一种成本。</h2></div>
+        <div class="architecture">
+          <article data-reveal><span class="chip">FAST ANSWER</span><h3>FAQ + Redis</h3><p>MySQL 存储高频问答，BM25 评分达到阈值后直接返回；热点问题进入 Redis，持续加速重复请求。</p></article>
+          <article data-reveal><span class="chip">DEEP ANSWER</span><h3>BERT + ReAct</h3><p>三分类意图路由后，由 ReAct Agent 执行检索、观察与质量评分；不足时使用 HyDE 或子查询重试。</p></article>
+          <article data-reveal><span class="chip">KNOWLEDGE</span><h3>OCR + Milvus</h3><p>PDF / DOCX / MD 经文本或多模态识别，按父 512 / 子 128 tokens 分块，再用 BGE-M3 稠密与稀疏向量入库。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-heading" data-reveal><p class="eyebrow">Recorded outcome</p><h2>项目记录中的速度收益。</h2><p class="lead">以下数字来自现有项目履历记录，不等同于独立复现实验；保留来源说明是案例的一部分。</p></div>
+        <div class="metric-grid">
+          <article class="metric-card" data-reveal><strong>85%+</strong><span>FAQ / 缓存链路覆盖率</span></article>
+          <article class="metric-card" data-reveal><strong>&lt;100 ms</strong><span>高频命中请求响应</span></article>
+          <article class="metric-card" data-reveal><strong>≈120×</strong><span>相对约 12 s 全量 RAG 管道</span></article>
+        </div>
+        <p class="metric-note">来源：项目履历脚本中的既有描述；代码仓库未包含独立 benchmark 报告。</p>
+      </div>
+    </section>
+
+    <section class="section" id="evidence">
+      <div class="container content-grid">
+        <div class="sticky-title" data-reveal><p class="eyebrow">Evidence ledger</p><h2>页面中的每个能力，都能回到代码。</h2></div>
+        <div class="content-card code-evidence" data-reveal>
+          <div class="evidence-row"><code>src/integrated_ref.py</code><span>FAQ、缓存与 RAG 三链路调度。</span></div>
+          <div class="evidence-row"><code>src/rag_qa/react_agent.py</code><span>检索质量自检、策略回退与流式生成。</span></div>
+          <div class="evidence-row"><code>src/rag_qa/vector_store.py</code><span>Milvus 向量存储与 BGE-M3 混合检索。</span></div>
+          <div class="evidence-row"><code>src/offline_kb/chunker.py</code><span>父子分块策略与知识入库准备。</span></div>
+          <div class="evidence-row"><code>src/api/qa.py</code><span>普通问答与 SSE 流式问答接口。</span></div>
+          <div class="evidence-row"><code>frontend/index.html</code><span>登录、对话、知识库管理与来源追踪界面。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container next-case" data-reveal>
+        <a href="patient-sentiment.html"><div><span>NEXT CASE / 02</span><strong>患者就医体验多维情感分类</strong></div><b aria-hidden="true">→</b></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><span>© <span data-year></span> Monesy</span><span>案例中的指标均标注证据边界。</span></div></footer>
+</body>
+</html>
