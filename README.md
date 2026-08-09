@@ -30,7 +30,7 @@ personal-website/
 
 ## 在线访问
 
-GitHub Pages 启用后访问：
+自动部署成功后访问：
 
 <https://monesyv.github.io/personal-website/>
 
