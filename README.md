@@ -28,6 +28,12 @@ personal-website/
 
 网站为纯 HTML / CSS / JavaScript，可直接部署到 GitHub Pages。
 
+## 在线访问
+
+GitHub Pages 启用后访问：
+
+<https://monesyv.github.io/personal-website/>
+
 ## 内容原则
 
 - 只展示能从代码、README 或项目记录中验证的能力。
