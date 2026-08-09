@@ -28,9 +28,15 @@ personal-website/
 
 网站为纯 HTML / CSS / JavaScript，可直接部署到 GitHub Pages。
 
-## 在线访问
+## GitHub Pages 部署
 
-自动部署成功后访问：
+首次发布时，在仓库中打开 `Settings → Pages`：
+
+1. `Source` 选择 `Deploy from a branch`。
+2. 分支选择 `main`，目录选择 `/ (root)`。
+3. 点击 `Save`，等待 GitHub 完成发布。
+
+发布成功后访问：
 
 <https://monesyv.github.io/personal-website/>
 
