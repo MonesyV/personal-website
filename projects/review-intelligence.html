@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="电商评论情感分析与风险处置 Agent 案例：BERT 蒸馏、BiLSTM INT8、本地风险规则、LLM 回退与人工升级。">
+  <meta name="theme-color" content="#6f3658">
+  <title>电商评论情感分析与风险处置 Agent · Monesy</title>
+  <link rel="stylesheet" href="../styles.css">
+  <script src="../script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="../index.html"><span class="brand-mark" aria-hidden="true">M</span><span>Monesy / AI Engineering</span></a>
+      <div class="nav-links"><a href="../index.html#work">全部项目</a><a href="#evidence">代码证据</a><a href="https://github.com/MonesyV/E_Feedback_agent_bert" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="case-hero">
+      <div class="container case-hero-grid">
+        <div data-reveal>
+          <p class="eyebrow">Case file 03 · Review intelligence</p>
+          <h1>电商评论情感分析与风险处置 Agent</h1>
+          <p class="lead">本地情感小模型负责高频判断，确定性规则守住安全底线；低置信度和复杂表达才进入可选 LLM 回退，高风险评论直接升级人工。</p>
+        </div>
+        <aside class="case-meta" data-reveal>
+          <dl>
+            <div><dt>场景</dt><dd>电商评论分析与风险分流</dd></div>
+            <div><dt>模型</dt><dd>BERT 教师 · BiLSTM 学生</dd></div>
+            <div><dt>服务</dt><dd>FastAPI · PostgreSQL</dd></div>
+            <div><dt>状态</dt><dd>CPU 小样本工程试跑</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container case-banner" data-reveal style="background:var(--plum)">
+        <div class="case-banner-grid">
+          <blockquote>情感告诉你用户的态度；风险规则决定什么必须先处理。</blockquote>
+          <div>
+            <p>“电池充电时冒烟”即使被量化模型判断为中性，也不能进入普通统计队列。系统把情感识别与风险判断分离，让起火、伤害、支付和隐私等信号绕过模型置信度，直接进入人工处置路径。</p>
+            <ul class="tag-list"><li>Knowledge Distillation</li><li>INT8</li><li>Safety Rules</li><li>LLM Fallback</li><li>HITL</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container content-grid">
+        <div class="sticky-title" data-reveal>
+          <p class="eyebrow">Action ladder</p>
+          <h2>风险等级不是标签装饰，而是处置入口。</h2>
+          <p class="text-muted">规则选择最高风险级别，并把结果映射到明确动作；High 与 Critical 均要求人工介入。</p>
+        </div>
+        <div class="risk-ladder" data-reveal>
+          <article class="risk-step low"><span>LOW</span><strong>普通评价</strong><em>记录观察</em></article>
+          <article class="risk-step medium"><span>MEDIUM</span><strong>物流、包装、客服等问题</strong><em>客服跟进</em></article>
+          <article class="risk-step high"><span>HIGH</span><strong>电池、退款、隐私、支付风险</strong><em>高优工单 · 人工介入</em></article>
+          <article class="risk-step critical"><span>CRITICAL</span><strong>起火、爆炸、触电、伤害、疑似假货</strong><em>立即人工复核</em></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">Decision pipeline</p>
+          <h2>先本地判断，再按风险与不确定性分流。</h2>
+        </div>
+        <div class="architecture four-up">
+          <article data-reveal><span class="chip">INPUT</span><h3>类型化输入</h3><p>Pydantic 校验评论文本与 review_id，空文本直接拒绝，统一单条分析请求结构。</p></article>
+          <article data-reveal><span class="chip">LOCAL MODEL</span><h3>情感小模型</h3><p>默认加载剪枝 INT8 BiLSTM，输出 positive / neutral / negative 与置信度。</p></article>
+          <article data-reveal><span class="chip">SAFETY RULES</span><h3>确定性风险路由</h3><p>独立规则扫描安全、退款、隐私、支付等信号，最高等级决定业务动作。</p></article>
+          <article data-reveal><span class="chip">FALLBACK</span><h3>语义回退与持久化</h3><p>低置信度或复杂文本可调用 DeepSeek；结果校验后与本地结论合并，并按 review_id 写入 PostgreSQL。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">CPU smoke experiment</p>
+          <h2>压缩得到可运行的小模型，也保留质量损失。</h2>
+          <p class="lead">以下指标来自仓库中的 CPU 小样本训练与蒸馏报告：8,000 条训练、1,000 条验证、1,000 条测试。它证明链路可运行，不代表生产模型质量。</p>
+        </div>
+        <div class="metric-grid four-up">
+          <article class="metric-card" data-reveal><strong>10,000</strong><span>中文电商评论工程试跑样本</span></article>
+          <article class="metric-card" data-reveal><strong>0.6427</strong><span>BERT 教师模型测试 Macro-F1</span></article>
+          <article class="metric-card" data-reveal><strong>36.9×</strong><span>INT8 学生权重相对教师更小</span></article>
+          <article class="metric-card" data-reveal><strong>0.6089</strong><span>剪枝 INT8 学生测试 Macro-F1</span></article>
+        </div>
+        <p class="metric-note">实验边界：教师仅训练 1 轮并冻结底部 8 层；学生训练 8 轮，目标权重非结构化剪枝 30%，LSTM / Linear 动态 INT8 量化。</p>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container content-grid">
+        <div class="sticky-title" data-reveal>
+          <p class="eyebrow">Model trade-off</p>
+          <h2>模型更小，但不隐藏准确率代价。</h2>
+          <p class="text-muted">量化版本从 390.15 MiB 降至 10.58 MiB；Macro-F1 相比教师下降 0.0338。</p>
+        </div>
+        <div class="comparison-table" data-reveal aria-label="模型测试指标与文件体积对比">
+          <div class="comparison-row header"><span>版本</span><span>Accuracy</span><span>Macro-F1</span><span>大小</span></div>
+          <div class="comparison-row"><strong>教师 BERT</strong><span>0.6430</span><span>0.6427</span><span>390.15 MiB</span></div>
+          <div class="comparison-row"><strong>蒸馏学生 FP32</strong><span>0.6150</span><span>0.6155</span><span>11.33 MiB</span></div>
+          <div class="comparison-row"><strong>剪枝学生 FP32</strong><span>0.6130</span><span>0.6129</span><span>11.33 MiB</span></div>
+          <div class="comparison-row highlight"><strong>剪枝学生 INT8</strong><span>0.6090</span><span>0.6089</span><span>10.58 MiB</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container content-grid">
+        <div class="sticky-title" data-reveal>
+          <p class="eyebrow">Controlled fallback</p>
+          <h2>外部模型是补充路径，不是安全裁判。</h2>
+        </div>
+        <div class="content-stack">
+          <article class="content-card" data-reveal><span class="number">01</span><h3>默认关闭</h3><p>LLM 回退必须通过环境变量显式启用；基础服务可以只依赖本地模型与规则运行。</p></article>
+          <article class="content-card" data-reveal><span class="number">02</span><h3>按不确定性触发</h3><p>默认置信度阈值为 0.85；长文本、多主题、反讽与复杂否定也可进入语义回退。</p></article>
+          <article class="content-card" data-reveal><span class="number">03</span><h3>高风险不等待</h3><p>本地规则判定为 High 或 Critical 时直接保留人工升级路径，不等待外部模型响应，也不允许语义结果降级风险。</p></article>
+          <article class="content-card" data-reveal><span class="number">04</span><h3>失败保持本地结论</h3><p>外部调用或结构校验失败时记录错误类型，返回已完成的本地分析，不把上游故障扩散为接口不可用。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container boundary" data-reveal>
+        <strong>能力边界：这是可复现的小样本工程试跑，不是生产级风控模型。</strong>
+        <p>MARC 星级被映射为三分类情感，其中 3 星作为 neutral 属于弱监督标签；正式训练还需要完整数据、更多轮次和专项风险样本。公开仓库包含训练脚本、配置、指标报告与验收代码，但不包含报告中生成的模型权重。数据使用还需遵守原始 Amazon Multilingual Reviews Corpus 条款。</p>
+      </div>
+    </section>
+
+    <section class="section" id="evidence">
+      <div class="container content-grid">
+        <div class="sticky-title" data-reveal><p class="eyebrow">Evidence ledger</p><h2>案例中的数字和路径，都能回到仓库文件。</h2></div>
+        <div class="content-card code-evidence" data-reveal>
+          <div class="evidence-row"><code>CPU_小样本训练蒸馏报告.md</code><span>数据拆分、训练配置、测试指标、模型体积与能力边界。</span></div>
+          <div class="evidence-row"><code>training/*.py</code><span>MARC 样本准备、BERT 教师微调、学生蒸馏、剪枝与量化。</span></div>
+          <div class="evidence-row"><code>src/review_intelligence/risk_rules.py</code><span>四级风险规则、最高等级选择、推荐动作与人工升级判断。</span></div>
+          <div class="evidence-row"><code>src/review_intelligence/llm_fallback.py</code><span>回退触发策略、结构化输出校验、风险只升不降与故障降级。</span></div>
+          <div class="evidence-row"><code>src/review_intelligence/api.py</code><span>FastAPI 生命周期、健康检查、分析接口和可选数据库持久化。</span></div>
+          <div class="evidence-row"><code>scripts/e2e_acceptance.py</code><span>Low / Medium / Critical 场景、人工升级与 PostgreSQL upsert 验收。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container next-case" data-reveal style="background:var(--ink)">
+        <a href="policy-rag.html"><div><span>RETURN TO CASE / 01</span><strong>医院制度智能问答系统</strong></div><b aria-hidden="true">→</b></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><span>© <span data-year></span> Monesy</span><span>实验指标与生产能力边界已分别标注。</span></div></footer>
+</body>
+</html>

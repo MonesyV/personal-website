@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Monesy 的医疗 AI 工程作品集：医院制度 RAG 问答与患者就医体验多维情感分类。">
+  <meta name="description" content="Monesy 的 AI 工程作品集：医院制度 RAG、患者体验分类与电商评论风险处置 Agent。">
   <meta name="theme-color" content="#10283f">
-  <title>Monesy · 医疗 AI 工程作品集</title>
+  <title>Monesy · AI 工程作品集</title>
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
 </head>
@@ -29,11 +29,11 @@
     <section class="hero">
       <div class="container hero-grid">
         <div data-reveal>
-          <p class="eyebrow">Healthcare AI · Verified by evidence</p>
-          <h1>不展示医疗 AI 的神奇，<span class="accent">只展示它如何被验证。</span></h1>
-          <p class="lead">两份工程案例，分别处理医院制度知识检索与患者就医体验分类。每项能力都对应可检查的代码、标签或项目记录。</p>
+          <p class="eyebrow">Applied AI · Verified by evidence</p>
+          <h1>不展示 AI 的神奇，<span class="accent">只展示它如何被验证。</span></h1>
+          <p class="lead">三份工程案例，覆盖知识检索、业务文本分类与风险处置。每项能力都对应可检查的代码、实验报告或验收脚本。</p>
           <div class="hero-actions">
-            <a class="button" href="#work">查看两个案例 <span aria-hidden="true">↓</span></a>
+            <a class="button" href="#work">查看三个案例 <span aria-hidden="true">↓</span></a>
             <a class="button secondary" href="https://github.com/MonesyV" target="_blank" rel="noreferrer">查看代码仓库 ↗</a>
           </div>
         </div>
@@ -41,7 +41,7 @@
           <strong>从模型到系统</strong>
           <p>关注数据进入、模型决策、接口输出和风险兜底，而不只是一张模型指标表。</p>
           <strong>从演示到证据</strong>
-          <p>有记录的数字注明来源；找不到的指标明确留白。</p>
+          <p>有报告的数字注明实验边界；找不到的指标明确留白。</p>
         </aside>
       </div>
     </section>
@@ -61,7 +61,7 @@
         <article class="proof-item">
           <span>PRIVACY / 03</span>
           <strong>数据不外露</strong>
-          <p>案例不展示真实患者文本、密钥或内网信息。</p>
+          <p>案例不展示真实业务文本、密钥或内网信息。</p>
         </article>
       </div>
     </section>
@@ -70,8 +70,8 @@
       <div class="container">
         <div class="section-heading" data-reveal>
           <p class="eyebrow">Selected case files</p>
-          <h2>两个问题，两套可以解释的技术路径。</h2>
-          <p class="lead">一个让制度知识可检索、可引用；一个把就医评论拆成业务维度与情感极性。</p>
+          <h2>三个问题，三套可以解释的技术路径。</h2>
+          <p class="lead">让制度知识可引用，让就医评论可分类，也让电商风险信号能越过情感模型直接升级。</p>
         </div>
 
         <div class="work-list">
@@ -116,6 +116,28 @@
               <a class="button" href="projects/patient-sentiment.html">阅读完整案例 →</a>
             </div>
           </article>
+
+          <article class="work-card review-card" data-reveal>
+            <div class="work-visual">
+              <span class="work-index">CASE FILE / 03 · RISK ROUTING</span>
+              <div class="display">情感识别之后，决定什么必须先处理</div>
+              <div class="risk-mini" aria-label="评论风险处置阶梯">
+                <span data-level="low">LOW · 记录观察</span>
+                <span data-level="medium">MEDIUM · 客服跟进</span>
+                <span data-level="high">HIGH · 高优工单</span>
+                <span data-level="critical">CRITICAL · 立即人工复核</span>
+              </div>
+            </div>
+            <div class="work-body">
+              <p class="eyebrow">电商评论情感分析与风险处置 Agent</p>
+              <h3>本地小模型优先，安全风险规则直达人工</h3>
+              <p>用 BERT 教师模型蒸馏三分类 BiLSTM，再通过确定性规则识别起火、伤害、支付与隐私风险；低置信度和复杂文本才进入可选 LLM 回退，高风险不等待外部模型。</p>
+              <ul class="tag-list" aria-label="技术栈">
+                <li>Knowledge Distillation</li><li>BiLSTM INT8</li><li>Risk Rules</li><li>FastAPI</li><li>PostgreSQL</li><li>HITL</li>
+              </ul>
+              <a class="button" href="projects/review-intelligence.html">阅读完整案例 →</a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -124,14 +146,14 @@
       <div class="container ethics-block" data-reveal>
         <div class="ethics-intro">
           <p class="eyebrow" style="color:#d8eff0">Responsible delivery</p>
-          <h2>医疗行业的作品集，也应当经得起审阅。</h2>
-          <p>页面把边界、来源和未验证项一起展示，因为可靠性本身就是工程能力。</p>
+          <h2>关键业务场景的作品集，也应当经得起审阅。</h2>
+          <p>页面把边界、来源和未验证项一起展示，因为医疗与安全风险场景都不能靠演示替代证据。</p>
         </div>
         <ul class="ethics-list">
           <li><strong>来源可查</strong><p>回答引用制度文档，案例引用具体代码模块。</p></li>
-          <li><strong>结果可解释</strong><p>分类标签直接对应医院可行动的体验维度。</p></li>
-          <li><strong>失败可控</strong><p>证据不足时回退，不让模型自由补全事实。</p></li>
-          <li><strong>隐私优先</strong><p>只用脱敏示例，不把业务数据当视觉素材。</p></li>
+          <li><strong>结果可解释</strong><p>分类标签和风险级别直接对应业务动作。</p></li>
+          <li><strong>失败可控</strong><p>证据不足时回退，高风险信号直接转人工。</p></li>
+          <li><strong>隐私优先</strong><p>只用公开或脱敏示例，不把业务数据当视觉素材。</p></li>
         </ul>
       </div>
     </section>
@@ -139,7 +161,7 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <span>© <span data-year></span> Monesy · Medical AI case files</span>
+      <span>© <span data-year></span> Monesy · Applied AI case files</span>
       <span>Designed around evidence, not spectacle.</span>
     </div>
   </footer>

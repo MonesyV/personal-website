@@ -1,4 +1,4 @@
-# 两个作品的源代码标注
+# 三个作品的源代码标注
 
 本文档用于维护作品集内容。这里只记录仓库或项目内的相对位置，不公开本机绝对路径。
 
@@ -62,3 +62,42 @@
 - 当前实现通过 `argmax` 输出一个“维度_极性”联合类别，严格来说是 20 类单标签分类，不是一次同时输出多个标签的多标签分类。
 - 在所给目录中没有找到该评论分类器的训练脚本、模型权重、数据集或评测报告。
 - 因此公开案例只展示标签设计、BERT 推理与 API 集成，不展示无法验证的准确率、F1 或线上效果。
+
+## 作品 03：电商评论情感分析与风险处置 Agent
+
+公开仓库：
+
+- `https://github.com/MonesyV/E_Feedback_agent_bert`
+
+训练与评测证据：
+
+- `CPU_小样本训练蒸馏报告.md`：数据拆分、训练配置、测试指标、模型体积与实验边界
+- `configs/smoke_cpu.json`：教师与学生模型的试跑参数
+- `data/processed/manifest.json`：8,000 / 1,000 / 1,000 数据拆分和标签分布
+- `training/prepare_marc_sample.py`：MARC 中文评论样本准备
+- `training/train_teacher_cpu.py`：中文 BERT 教师模型 CPU 微调
+- `training/distill_prune_student_cpu.py`：BiLSTM 学生蒸馏、30% 非结构化剪枝与动态 INT8 量化
+
+服务与风控证据：
+
+- `src/review_intelligence/service.py`：本地情感模型加载与批量推理
+- `src/review_intelligence/risk_rules.py`：Low / Medium / High / Critical 四级风险规则与推荐动作
+- `src/review_intelligence/llm_fallback.py`：低置信度与复杂文本回退、风险只升不降、外部调用失败降级
+- `src/review_intelligence/api.py`：FastAPI 生命周期、健康检查与评论分析接口
+- `src/review_intelligence/database.py`：独立 PostgreSQL 配置与分析结果 upsert
+- `scripts/e2e_acceptance.py`：低、中、严重风险场景和数据库验收
+
+网页使用的可验证实验指标：
+
+- 10,000 条中文电商评论：8,000 训练、1,000 验证、1,000 测试
+- 教师 BERT：Accuracy 0.6430，Macro-F1 0.6427，权重 390.15 MiB
+- 剪枝 INT8 学生：Accuracy 0.6090，Macro-F1 0.6089，权重 10.58 MiB
+- INT8 学生相对教师权重约小 36.9 倍
+
+能力边界：
+
+- 这是 CPU 小样本工程试跑，不代表生产模型质量。
+- 3 星评论直接映射为 neutral，属于弱监督标签设计。
+- 情感模型不替代风险规则；起火、爆炸、伤害等信号必须由独立规则升级人工。
+- 公开仓库包含训练脚本、配置、指标报告与验收代码，但不包含报告中生成的模型权重。
+- MARC 数据使用需遵守原始 Amazon Multilingual Reviews Corpus 条款。
